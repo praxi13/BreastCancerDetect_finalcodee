@@ -84,6 +84,13 @@ except Exception as e:
     class Analysis: pass
     class Report: pass
     def get_optional_user(): return None
+    
+    # Create dummy routers
+    users_router = APIRouter(prefix="/users", tags=["Users"])
+    patients_router = APIRouter(prefix="/patients", tags=["Patients"])
+    analyses_router = APIRouter(prefix="/analyses", tags=["Analyses"])
+    reports_router = APIRouter(prefix="/reports", tags=["Reports"])
+    dashboard_router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
 
 def convert_numpy_types(obj):
@@ -280,6 +287,11 @@ if DATABASE_AVAILABLE:
             print(f"⚠️ Failed to create tables: {e}")
 else:
     print("❌ Database module not available - other routers not mounted")
+    app.include_router(users_router)
+    app.include_router(patients_router)
+    app.include_router(analyses_router)
+    app.include_router(reports_router)
+    app.include_router(dashboard_router)
 
 # ----------------- MODEL LOADING (shared) -----------------
 BASE_DIR = Path(__file__).resolve().parent
